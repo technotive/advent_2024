@@ -1,14 +1,13 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+extern crate aoc_runner;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[macro_use]
+extern crate aoc_runner_derive;
+extern crate crypto;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub mod day1;
+// pub mod day2;
+// pub mod day3;
+// pub mod day4;
+// pub mod day5;
+
+aoc_lib!{ year = 2024 }
