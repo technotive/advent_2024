@@ -2,7 +2,7 @@
 pub fn one(input: &str) -> u32 {
     let mut a = 0;
     let mut b = 0;
-    let mut expect = Expect::AOrComma;
+    let mut expect = Expect::M;
     let mut sum = 0;
     for c in input.chars() {
         expect = match (c, expect) {
@@ -57,7 +57,7 @@ pub fn two(input: &str) -> u32 {
     let mut enabled = true;
     let mut a = 0;
     let mut b = 0;
-    let mut expect = Expect2::AOrComma;
+    let mut expect = Expect2::MOrD;
     let mut sum = 0;
     for c in input.chars() {
         expect = match (c, expect, enabled) {
