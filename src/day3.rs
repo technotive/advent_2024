@@ -1,5 +1,5 @@
 #[aoc(day3, part1)]
-pub fn one(input: &str) -> u32 {
+pub fn part1(input: &str) -> u32 {
     let mut a = 0;
     let mut b = 0;
     let mut expect = Expect::M;
@@ -53,7 +53,7 @@ enum Expect2 {
 }
 
 #[aoc(day3, part2)]
-pub fn two(input: &str) -> u32 {
+pub fn part2(input: &str) -> u32 {
     let mut enabled = true;
     let mut a = 0;
     let mut b = 0;

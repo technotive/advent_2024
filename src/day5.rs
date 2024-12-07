@@ -1,5 +1,5 @@
 #[aoc(day5, part1)]
-pub fn one(input: &str) -> usize {
+pub fn part1(input: &str) -> usize {
     let mut cannot_precede = [[false; 100]; 100];
     let (rules, printing) = input.split_once("\n\n").unwrap();
     for l in rules.lines() {
@@ -25,7 +25,7 @@ pub fn one(input: &str) -> usize {
 }
 
 #[aoc(day5, part2)]
-pub fn two(input: &str) -> usize {
+pub fn part2(input: &str) -> usize {
     let mut cannot_precede = [[false; 100]; 100];
     let (rules, printing) = input.split_once("\n\n").unwrap();
     for l in rules.lines() {
