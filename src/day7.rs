@@ -5,21 +5,21 @@ pub fn part1(input: &str) -> u64 {
         let (result, numbers) = l.split_once(": ").unwrap();
         let result = result.parse::<u64>().unwrap();
         let numbers = numbers.split(' ').map(|n| n.parse::<u64>().unwrap()).collect::<Vec<_>>();
-        if recurse_one(&numbers, 1, numbers[0], result) {
-            sum += result
-        }
+        if recurse_one_v2(result, &numbers, numbers.len()-1) { sum += result }
     }
     sum
 }
-fn recurse_one(numbers: &Vec<u64>, index: usize, acc: u64, end: u64) -> bool {
-    if acc > end { return false; }
-    if let Some(&n) = numbers.get(index) {
-        return 
-            recurse_one(numbers, index+1, acc+n, end) ||
-            recurse_one(numbers, index+1, acc*n, end)
-    } else {
-        return acc == end
+fn recurse_one_v2(num: u64, numbers: &Vec<u64>, index: usize) -> bool {
+    if index == 0 {
+        return numbers[0] == num
     }
+    (
+        num.checked_sub(numbers[index]).is_some()
+        && recurse_one_v2(num-numbers[index], numbers, index-1)
+    ) || (
+        num % numbers[index] == 0
+        && recurse_one_v2(num/numbers[index], numbers, index-1)
+    )
 }
 
 #[aoc(day7, part2)]
@@ -29,28 +29,32 @@ pub fn part2(input: &str) -> u64 {
         let (result, numbers) = l.split_once(": ").unwrap();
         let result = result.parse::<u64>().unwrap();
         let numbers = numbers.split(' ').map(|n| n.parse::<u64>().unwrap()).collect::<Vec<_>>();
-        if recurse_two(&numbers, 1, numbers[0], result) {
-            sum += result
+        if recurse_two_v2(result, &numbers, numbers.len()-1) {
+            sum += result;
         }
     }
     sum
 }
-fn recurse_two(numbers: &Vec<u64>, index: usize, acc: u64, end: u64) -> bool {
-    if acc > end { return false; }
-    if let Some(&n) = numbers.get(index) {
-        return recurse_two(numbers, index+1, acc+n, end)
-        || recurse_two(numbers, index+1, acc*n, end)
-        || recurse_two(numbers, index+1, concat(acc, n), end)
-    } else {
-        return acc == end
+fn recurse_two_v2(num: u64, numbers: &Vec<u64>, index: usize) -> bool {
+    if index == 0 {
+        return numbers[0] == num
     }
+    let det = detach(num, numbers[index]);
+    (
+        num.checked_sub(numbers[index]).is_some()
+        && recurse_two_v2(num-numbers[index], numbers, index-1)
+    ) || (
+        num % numbers[index] == 0
+        && recurse_two_v2(num/numbers[index], numbers, index-1)
+    ) || (
+        det.is_some()
+        && recurse_two_v2(det.unwrap(), numbers, index-1)
+    )
 }
-fn concat(acc: u64, n: u64) -> u64 {
-    if n < 10 {
-        acc * 10 + n
-    } else if n < 100 {
-        acc * 100 + n
-    } else {
-        acc * 1000 + n
-    }
+fn detach(num: u64, n: u64) -> Option<u64> {
+    if num < n { return None }
+    if n < 10 && (num-n)%10 == 0 { return Some((num-n)/10) }
+    if n < 100 && (num-n)%100 == 0 { return Some((num-n)/100)}
+    if (num-n)%1000 == 0 { return Some((num-n)/1000) }
+    None
 }
